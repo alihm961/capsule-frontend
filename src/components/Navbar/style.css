@@ -1,0 +1,54 @@
+.dashboard-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #5E2487; 
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-navbar h2 {
+  margin: 0;
+  font-weight: normal;
+  margin-left: 60px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.create-btn {
+  background: #FBF6FC;
+  color: #5E2487;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.create-btn:hover {
+  background: #F5E4F8;
+  transform: scale(1.1);
+}
+
+.profile-menu {
+  background: #FBF6FC;
+  color: #5E2487;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.profile-menu:hover {
+  background: #F5E4F8;
+  transform: scale(1.1);
+}

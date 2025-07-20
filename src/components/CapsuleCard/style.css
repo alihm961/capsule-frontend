@@ -1,0 +1,64 @@
+.capsule-card {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.capsule-card:hover {
+  transform: translateY(-5px);
+}
+
+.capsule-title {
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.capsule-info {
+  font-size: 14px;
+  margin: 0.2rem 0;
+}
+
+.delete-btn {
+  margin-top: 1rem;
+  background: #441a64;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #F5E4F8;
+}
+
+.capsule-buttons button:hover {
+  background: #441a64;
+}
+
+.capsule-card {
+  position: relative;
+}
+
+.delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgb(87, 83, 83);
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .capsule-card {
+    padding: 15px;
+  }
+
+  .capsule-card .capsule-title {
+    font-size: 1.1rem;
+  }
+}
