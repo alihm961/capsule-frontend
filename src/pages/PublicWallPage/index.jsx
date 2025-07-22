@@ -2,67 +2,51 @@ import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import CapsuleCard from '../../components/CapsuleCard';
 import api from '../../api/axios';
+import useFilters from '../../hooks/useFilters';
 import './style.css';
 
+let cache = null;
+
 const PublicWallPage = () => {
-  const [capsules, setCapsules] = useState([]);
-  const [moods, setMoods] = useState([]);
-  const [countries, setCountries] = useState([]);
+  const [capsules, setCapsules] = useState(cache || []);
+  const [loading, setLoading] = useState(!cache);
   const [filters, setFilters] = useState({
     country: '',
     mood: '',
-    timeRanges: 'all'
+    timeRanges: 'all',
   });
 
-  useEffect(() => {
-    const params = {};
-if (filters.country) params.country = filters.country;
-if (filters.mood) params.mood = filters.mood;
-
-api.get('/capsules/public', { params })
-  .then((res) => {
-    const data = res.data?.data || [];
-    setCapsules(data);
-    localStorage.setItem('timeCapsulePublicCapsules', JSON.stringify(data));
-  })
-  .catch((err) => {
-    console.error('Failed to fetch capsules:', err);
-  });
-  }, [filters]); 
+  const { moods, countries } = useFilters();
 
   useEffect(() => {
-    api.get('/guest/moods')
-      .then(res => {
-        const data = res.data?.data || [];
-        setMoods(data.map(m => m.name)); 
-      })
-      .catch(err => {
-        console.error('Failed to fetch moods:', err);
-      });
+    const fetchCapsules = async () => {
+      try {
+        const params = {};
+        if (filters.country) params.country = filters.country;
+        if (filters.mood) params.mood = filters.mood;
 
-    api.get('/capsules/countries')
-      .then(res => {
+        const res = await api.get('/capsules/public', { params });
         const data = res.data?.data || [];
-        setCountries(data.map(c => c.name));
-      })
-      .catch(err => {
-        console.error('Failed to fetch countries:', err);
-      });
-  }, []);
+        cache = data;
+        setCapsules(data);
+        localStorage.setItem('timeCapsulePublicCapsules', JSON.stringify(data));
+      } catch (err) {
+        console.error('Failed to fetch capsules:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleDelete = (capsuleToDelete) => {
-    const updatedCapsules = capsules.filter(c => c.id !== capsuleToDelete.id);
-    setCapsules(updatedCapsules);
-    localStorage.setItem('timeCapsulePublicCapsules', JSON.stringify(updatedCapsules));
-  };
+    if (!cache) fetchCapsules();
+  }, [filters.country, filters.mood]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const filteredCapsules = Array.isArray(capsules)
-    ? capsules.filter(capsule => {
+    ? capsules.filter((capsule) => {
         let match = true;
         if (filters.country && capsule.country?.name !== filters.country) match = false;
         if (filters.mood && capsule.mood?.name !== filters.mood) match = false;

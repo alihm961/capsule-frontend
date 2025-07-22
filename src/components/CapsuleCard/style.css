@@ -32,7 +32,7 @@
 }
 
 .delete-btn:hover {
-  background: #F5E4F8;
+  background: #57277b;
 }
 
 .capsule-buttons button:hover {
@@ -51,6 +51,76 @@
   border: none;
   color: rgb(87, 83, 83);
   cursor: pointer;
+}
+
+.capsule-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.capsule-modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.capsule-modal img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.capsule-modal h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.capsule-modal p {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  color: #444;
+}
+
+.capsule-modal button {
+  margin-top: 1rem;
+  background: #441a64;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.capsule-modal button:hover {
+  background: #57277b;
 }
 
 @media (max-width: 600px) {

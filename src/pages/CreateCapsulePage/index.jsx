@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import api from '../../api/axios';
+import useMoods from '../../hooks/useMoods'; 
 import './style.css';
 
 const CreateCapsulePage = () => {
@@ -16,15 +17,9 @@ const CreateCapsulePage = () => {
     audio: null,
   });
 
-  const [moods, setMoods] = useState([]);
+  const { moods, loading, error } = useMoods();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    api.get('/guest/moods')
-      .then(res => setMoods(res.data?.data || []))
-      .catch(err => console.error('Failed to fetch moods', err));
-  }, []);
 
   const handleChange = (e) => {
     const { name, type, checked, files, value } = e.target;
@@ -40,15 +35,14 @@ const CreateCapsulePage = () => {
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const imageBase64 = formData.image ? await convertToBase64(formData.image) : null;
       const audioBase64 = formData.audio ? await convertToBase64(formData.audio) : null;
@@ -66,9 +60,7 @@ const CreateCapsulePage = () => {
 
       const token = localStorage.getItem('token');
       await api.post('/capsules/create', payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setSuccessMessage('Capsule created!');
@@ -96,7 +88,6 @@ const CreateCapsulePage = () => {
             value={formData.title}
             onChange={handleChange}
           />
-
           <textarea
             name="message"
             placeholder="Message"
@@ -104,7 +95,6 @@ const CreateCapsulePage = () => {
             value={formData.message}
             onChange={handleChange}
           />
-
           <input
             type="date"
             name="revealDate"
@@ -112,7 +102,6 @@ const CreateCapsulePage = () => {
             onChange={handleChange}
           />
 
-          
           <select
             name="mood_id"
             required
@@ -138,7 +127,6 @@ const CreateCapsulePage = () => {
               />
               Private
             </label>
-
             <label>
               <input
                 type="radio"
@@ -167,7 +155,6 @@ const CreateCapsulePage = () => {
             accept="image/*"
             onChange={handleChange}
           />
-
           <input
             type="file"
             name="audio"
